@@ -1,7 +1,5 @@
 class RouterHandler():
 
-    MANUFACTURER = ""
-    MODEL = ""
     PROTOCOL = ""
 
     def __init__(self, username, ip):
@@ -9,5 +7,4 @@ class RouterHandler():
         self.ip = ip
 
     def generate_url(self, relative_url):
-        return "{protocol}://{domain}/{relative_url}".format(
-            protocol=self.PROTOCOL, domain=self.ip, relative_url=relative_url)
+        return f"{self.PROTOCOL}://{self.ip}/{relative_url}"
