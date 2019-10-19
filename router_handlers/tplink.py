@@ -236,3 +236,28 @@ class TPLink(RouterHandler):
         else:
 
             print(f"Renewing IP Address...\nOLD IP -> NEW IP\n{old_ip} -> {new_ip}")
+
+
+    def restart_mac_address(self):
+
+        response = requests.get(
+            self.generate_url(self.RESTART_MAC),
+            headers=self.request_headers)
+
+        if response.status_code == 401:
+            return None
+
+        texto = response.text.splitlines()
+        mac = texto[2].split(",")
+
+        active_mac = mac[0].replace('"', '').replace(' ','')
+        fabric_mac = mac[1].replace('"', '').replace(' ','')
+
+        print("Restoring Mac address...")
+        self.send_mac_change_request(fabric_mac)
+        time.sleep(10)
+
+        if fabric_mac == self.get_mac_address():
+            print(f"Mac restaured: {active_mac} -> {fabric_mac}")
+        else:
+            print("Problem restarting Mac address.")

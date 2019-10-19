@@ -105,3 +105,4 @@ venv.bak/
 
 # AGREGADOS POR EL PROGRAMADOR 
 credentials.txt
+/router

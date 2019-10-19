@@ -1,4 +1,5 @@
 import sys
+import os.path
 
 from io import open
 from router_handlers.wr340g import TPLinkWR340G
@@ -30,13 +31,17 @@ elif len(sys.argv) > 1 and len(sys.argv) <= 3:
         # password
         # IP_address
 
-        a = open('credentials.txt', 'r')
-        credentials = a.readlines()
-        for i in range(2):
-            credentials[i] = credentials[i].replace('\n','')
+        if os.path.isfile('credentials.txt'):
 
-        w = TPLinkWR340G(username=credentials[0], password=credentials[1], ip=credentials[2])
-        #w = TPLinkWR340G()
+            a = open('credentials.txt', 'r')
+            credentials = a.readlines()
+            for i in range(2):
+                credentials[i] = credentials[i].replace('\n','')
+
+            w = TPLinkWR340G(username=credentials[0], password=credentials[1], ip=credentials[2])
+
+        else:
+            w = TPLinkWR340G()
 
         if sys.argv[1] == "status":
             w.get_status()

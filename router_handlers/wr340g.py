@@ -75,7 +75,7 @@ class TPLinkWR340G (TPLink):
         else:
             domain = 'Off'
 
-        print(f"*** Firewall ***\nGeneral Switch: {general}\nIP Addess Filtering: {ip}\nMAC Address Filtering: {mac}\nDomain Adress Filtering: {domain}")
+        print(f"** Firewall **\nGeneral Switch: {general}\nIP Address Filtering: {ip}\nMAC Address Filtering: {mac}\nDomain Address Filtering: {domain}")
         
 
     def get_public_ip(self):
@@ -92,25 +92,3 @@ class TPLinkWR340G (TPLink):
         return second_splited_response[1].replace(' ', '').replace('"', '').replace(',', '')
 
 
-    def restart_mac_address(self):
-
-        response = requests.get(
-            self.generate_url(self.RESTART_MAC),
-            headers=self.request_headers)
-
-        texto = response.text.splitlines()
-        mac = texto[2].split(",")
-
-        old_mac = mac[0].replace('"', '').replace(' ','')
-        new_mac = mac[1].replace('"', '').replace(' ','')
-
-        print("Restoring Mac address...")
-        self.send_mac_change_request(new_mac)
-        time.sleep(10)
-
-        new_mac = self.get_mac_address()
-
-        if new_mac == self.get_mac_address():
-            print(f"Mac restaured: {old_mac} -> {new_mac}")
-        else:
-            print("Problem restarting Mac address.")
